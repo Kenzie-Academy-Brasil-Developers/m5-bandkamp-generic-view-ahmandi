@@ -7,11 +7,12 @@ class GetDetailView:
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAccountOwner]
 
-    def retrieve(self, request: Request, pk: int) -> Response:
+    def retrieve(self, request: Request, *args, **kwargs) -> Response:
         """
         Obtençao de usuário
         """
-        model_object = get_object_or_404(self.view_queryset, pk=pk)
+        id_value = kwargs[self.url_param_name]
+        model_object = get_object_or_404(self.view_queryset, pk=id_value)
 
         self.check_object_permissions(request, model_object)
 
@@ -20,11 +21,12 @@ class GetDetailView:
         return Response(serializer.data, status.HTTP_200_OK)
 
 class PatchDetailView:
-    def update(self, request: Request, pk: int) -> Response:
+    def update(self, request: Request, *args, **kwargs) -> Response:
         """
         Atualização de usuário
         """
-        model_object = get_object_or_404(self.view_queryset, pk=pk)
+        id_value = kwargs[self.url_param_name]
+        model_object = get_object_or_404(self.view_queryset, pk=id_value)
 
         self.check_object_permissions(request, model_object)
 
@@ -35,11 +37,12 @@ class PatchDetailView:
         return Response(serializer.data, status.HTTP_200_OK)
 
 class DeleteDetailView:
-    def destroy(self, request: Request, pk: int) -> Response:
+    def destroy(self, request: Request, *args, **kwargs) -> Response:
         """
         Deleçao de usuário
         """
-        model_object = get_object_or_404(self.view_queryset, pk=pk)
+        id_value = kwargs[self.url_param_name]
+        model_object = get_object_or_404(self.view_queryset, pk=id_value)
 
         self.check_object_permissions(request, model_object)
 
@@ -48,14 +51,14 @@ class DeleteDetailView:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OnlyGetDetailView(GetDetailView, APIView):
-    def get(self, request: Request, pk:int) -> Response:
-        return super().retrieve(request, pk)
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        return super().retrieve(request, *args, **kwargs)
 
 class OnlyPatchDetailView(PatchDetailView, APIView):
-    def patch(self, request: Request, pk:int) -> Response:
-        return super().update(request, pk)
+    def patch(self, request: Request, *args, **kwargs) -> Response:
+        return super().update(request, *args, **kwargs)
 
 class OnlyDeleteDetailView(GetDetailView, APIView):
-    def delete(self, request: Request, pk:int) -> Response:
-        return super().destroy(request, pk)
+    def delete(self, request: Request, *args, **kwargs) -> Response:
+        return super().destroy(request, *args, **kwargs)
 
