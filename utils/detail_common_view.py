@@ -58,7 +58,7 @@ class OnlyPatchDetailView(PatchDetailView, APIView):
     def patch(self, request: Request, *args, **kwargs) -> Response:
         return super().update(request, *args, **kwargs)
 
-class OnlyDeleteDetailView(GetDetailView, APIView):
+class OnlyDeleteDetailView(DeleteDetailView, APIView):
     def delete(self, request: Request, *args, **kwargs) -> Response:
         return super().destroy(request, *args, **kwargs)
 
